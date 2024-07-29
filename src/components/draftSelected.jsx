@@ -2,6 +2,7 @@
 import { useHeroProvider } from "@/context/hero-provider";
 import DraftSelectCard from "./draftSelectCard";
 import ArenaMapCard from "./arenaMapCard";
+import Loading from "@/app/loading";
 const DraftSelected = () => {
     const { hero, player, player2, arena } = useHeroProvider()
     const team1 = [1, 4, 5]
@@ -13,9 +14,9 @@ const DraftSelected = () => {
         return false
     }
 
-    if (!hero && !arena) return (<div>... Loading</div>)
+    if (hero.length == 0) return (<div><Loading /></div>)
     return (
-        <section className="flex justify-between mb-8 grow">
+        <section className="flex justify-between mb-8 flex-grow">
             <div className="flex gap-4">
                 {
                     team1.map((item, index) => <DraftSelectCard key={index} status={statusPick(index, player)} pick={player.pick[index]} player1={true} order={item} />)

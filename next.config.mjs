@@ -7,6 +7,9 @@ const nextConfig = {
             },
             {
                 hostname:'static.wikia.nocookie.net'
+            },
+            {
+                hostname:'ezio.sakurani.my.id'
             }
         ]
     },
