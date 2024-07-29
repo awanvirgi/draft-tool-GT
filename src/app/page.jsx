@@ -5,14 +5,12 @@ import BanList from "@/components/banList";
 
 export default function Page() {
   return (
-    <main className="flex flex-col grow">
-      <DraftSelected  />
+    <main className="flex flex-col flex-grow">
+      <DraftSelected />
       <div className="mt-auto">
         <BanList />
-        <DraftHeroList  />
+        <DraftHeroList />
       </div>
-      {/* <Test3 /> */}
-
     </main>
   );
 }

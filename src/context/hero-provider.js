@@ -21,16 +21,17 @@ const HeroProvider = ({ children }) => {
     //ngefetch data dari mockAPI yang nantinya disimpan dalam state
     const fetchDataHero = async () => {
         try {
-            const response = await fetch('https://66a24114967c89168f1f5e75.mockapi.io/charactergt/characterData');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_HERO_BASE_URL}/characterData`);
             const data = await response.json();
             setHero(data);
-        } catch {
-            console.error("Error Fetching Data");
+        } catch (error) {
+            console.error("Error Fetching Data", error);
         }
     };
+    
     const fetchDataArena = async () =>{
         try{
-            const response = await fetch('https://66a24114967c89168f1f5e75.mockapi.io/charactergt/arena_map')
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_HERO_BASE_URL}/arena_map`)
             const data = await response.json();
             setArena(data)
         }catch{

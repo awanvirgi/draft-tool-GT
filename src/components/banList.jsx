@@ -11,9 +11,10 @@ const BanList = () => {
         return false
     }
 
-    if (!hero) return (<div>... Loading</div>)
+    if (hero.length == 0) return (<div></div>)
+
     return (
-        <section className="flex w-full justify-between">
+        <section className="flex w-full justify-between items-center">
             <div className="flex gap-1">
                 {/* memanggil card battle niatnya ingin dibuat dinamis agar ban picknya beragam */}
                 <BanSelectCard pickBan={player.ban[0]} status={statusBan(player, 0)} order={1} />
