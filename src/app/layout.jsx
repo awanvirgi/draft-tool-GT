@@ -13,11 +13,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`flex flex-col h-screen px-24 pt-8 bg-gray-900 ${inter.className}`}>
+      <Head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+      </Head>
+      <body className={`flex w-full h-screen lg:px-24 lg:pt-8 p-2 bg-[url(/arena.png)] bg-cover backdrop-brightness-50 bg-center touch-manipulation ${inter.className}`}>
         <HeroProvider >
           {children}
         </HeroProvider>
-      </body>
+      </body>   
     </html>
   );
 }

@@ -11,7 +11,7 @@ const NameScoreCard = () => {
         score: 0
     })
     return (
-        <div className="flex font-bold text-2xl grow py-2 flex-col justify-between relative">
+        <div className="flex font-bold lg:text-2xl text-lg lg:grow py-2  flex-col justify-between relative">
             <div className="absolute text-white top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 flex justify-center">
                 <input type="number" name="score" onChange={(target) => setNameScore1({
                     name: nameScore1.name,

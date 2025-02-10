@@ -1,14 +1,16 @@
 'use client'
+import { fetchCharData } from "@/api/api";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const HeroContext = createContext(undefined);
 
 const HeroProvider = ({ children }) => {
     const [hero, setHero] = useState([]);
-    const [arena,setArena] = useState([])
+    const [arena, setArena] = useState([])
     const [count, setCount] = useState(1);
     const [ban, setBan] = useState(true);
     const [maxBan, setMaxBan] = useState(2) // ini buat masa depan nanti jika bisa diatur jumlah ban nya
+    const [timer, setTimer] = useState(20) // ini nanti harusnya bisa diset jumlah waktunya
     const [player, setPlayer] = useState({
         ban: [],
         pick: []
@@ -21,20 +23,22 @@ const HeroProvider = ({ children }) => {
     //ngefetch data dari mockAPI yang nantinya disimpan dalam state
     const fetchDataHero = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_HERO_BASE_URL}/characterData`);
-            const data = await response.json();
-            setHero(data);
+            // const response = await fetch(`${process.env.NEXT_PUBLIC_API_HERO_BASE_URL}/characterData`);
+            // const data = await response.json();
+            // setHero(data);
+            const response = await fetchCharData();
+            setHero(response);
         } catch (error) {
             console.error("Error Fetching Data", error);
         }
     };
-    
-    const fetchDataArena = async () =>{
-        try{
+
+    const fetchDataArena = async () => { // ngambil data arena yang kemungkinan bakal jadiin lokal aj
+        try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_HERO_BASE_URL}/arena_map`)
             const data = await response.json();
             setArena(data)
-        }catch{
+        } catch {
             console.error("Error Fetching Data")
         }
     }
@@ -42,6 +46,23 @@ const HeroProvider = ({ children }) => {
         fetchDataHero();
         fetchDataArena();
     }, []);
+
+
+    const zeroTimer = () => { //saat timer 0 maka akan mengambil akan random
+        let random;
+        let allPickBan = [...player.pick, ...player.ban, ...player2.pick, ...player2.ban]
+        do {
+            random = ~~(Math.random() * hero.length)
+        } while (allPickBan.includes(random))
+        if (timer == 0) {
+            handleDraft(random)
+        }
+    }
+    useEffect(() => {
+        if (timer == 0) {
+            zeroTimer() // saat timer 0 jalankan fungsi
+        }
+    }, [timer])
 
     //buat atur alurnya draft dan data ban & pick nya
     const handleDraft = (value) => {
@@ -56,7 +77,7 @@ const HeroProvider = ({ children }) => {
                     ban: [...player2.ban, value],
                     pick: [...player2.pick]
                 })
-                // ini buat cek buat masttin kalau sudah sselesai ban nya maka lanjut ke section pick
+            // ini buat cek buat masttin kalau sudah sselesai ban nya maka lanjut ke section pick
             setCount(prevCount => {
                 const newCount = prevCount + 1;
                 if (newCount > maxBan * 2) {
@@ -95,37 +116,40 @@ const HeroProvider = ({ children }) => {
     }
     //buat mundur 1 langkah pada draft pick
     const undo = () => {
-        if (ban) {
-            if (count % 2 == 0) {
-                player.ban.pop()
-            } else {
-                player2.ban.pop()
-            }
-            setCount(prevCount => {
-                if (prevCount > 0) {
-                    return prevCount - 1
+        if (count != 1) {
+            if (ban) {
+                if (count % 2 == 0) {
+                    player.ban.pop()
+                } else {
+                    player2.ban.pop()
                 }
-            })
-        } else {
-            if (count > 1) {
                 setCount(prevCount => {
-                    if (prevCount > 0 && !ban) {
+                    if (prevCount > 0) {
                         return prevCount - 1
                     }
                 })
-                if ([2, 5, 6].includes(count)) {
-                    player.pick.pop()
+            } else {
+                if (count > 1) {
+                    setCount(prevCount => {
+                        if (prevCount > 0 && !ban) {
+                            return prevCount - 1
+                        }
+                    })
+                    if ([2, 5, 6].includes(count)) {
+                        player.pick.pop()
+                    }
+                    else if ([3, 4, 7].includes(count)) {
+                        player2.pick.pop()
+                    }
                 }
-                else if ([3, 4, 7].includes(count)) {
-                    player2.pick.pop()
+                else {
+                    setBan(true)
+                    setCount(4)
+                    player2.ban.pop()
                 }
-            }
-            else {
-                setBan(true)
-                setCount(4)
-                player2.ban.pop()
             }
         }
+
 
     }
     //mengulang semuanya
@@ -142,7 +166,7 @@ const HeroProvider = ({ children }) => {
         setBan(true)
     }
     return (
-        <HeroContext.Provider value={{ hero, setHero, handleDraft, alreadyPick, player, player2, ban, count, maxBan, reset, undo ,arena}}>
+        <HeroContext.Provider value={{ hero, setHero, handleDraft, alreadyPick, player, player2, ban, count, maxBan, reset, undo, arena, timer, setTimer }}>
             {children}
         </HeroContext.Provider>
     );
