@@ -3,8 +3,7 @@ import { useHeroProvider } from "@/context/hero-provider"
 import { useEffect, useState, useRef } from "react"
 
 const ButtonArea = () => {
-    const { hero, reset, undo, count } = useHeroProvider()
-    const [timer, setTimer] = useState(20)
+    const { hero, reset, undo, count, timer, setTimer } = useHeroProvider()
     const intervalRef = useRef(null)
 
     //ini untuk itung mundur
@@ -29,21 +28,19 @@ const ButtonArea = () => {
         useEffect(() => {
             setTimer(20)
         }, [count])
-    const lastSecond = () => {
-        if (count > 7 && timer <= 5 && timer > 0) return "animate-ping text-red-500"
-    }
+
     if (hero.length == 0) return (<div></div>)
 
     return (
-        <div className="flex gap-2 items-end">
+        <div className="flex lg:gap-2 lg:flex-grow-0 flex-grow items-end justify-center relative">
             {/* tombol untuk reset dan undo */}
-            <button onClick={() => reset()} className="p-4 text-sm h-min bg-black text-white rounded-md">Reset</button>
-            <div className="py-4 px-10 bg-white rounded-md h-min text-xl font-bold">
-                <div className={lastSecond()}>
-                    {count < 7?timer:"End"}
+            <button onClick={() => reset()} className="lg:p-4  text-sm lg:h-min py-2 flex-grow bg-black text-white rounded-md">Reset</button>
+            <div className="lg:py-4 lg:px-10 py-2 px-4 relative bg-white rounded-md h-min lg:text-xl font-bold">
+                <div className={`${count < 7 && timer <= 1/4*20 && timer > 0 ? "animate-ping duration-[1s] text-red-500" : ""}`}>
+                    {count < 7 ? timer : "End"}
                 </div>
             </div>
-            <button onClick={() => undo()} className="p-4 text-sm h-min bg-black text-white rounded-md">Undo</button>
+            <button onClick={() => undo()} className="lg:p-4  text-sm lg:h-min py-2 flex-grow bg-black text-white rounded-md">Undo</button>
         </div>
     )
 }
