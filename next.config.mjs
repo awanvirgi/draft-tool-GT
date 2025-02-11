@@ -10,6 +10,9 @@ const nextConfig = {
             },
             {
                 hostname:'ezio.sakurani.my.id'
+            },
+            {
+                hostname:'i.imgur.com'
             }
         ]
     },
