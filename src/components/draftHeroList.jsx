@@ -42,7 +42,7 @@ const DraftHeroList = () => {
             <div className="flex justify-center gap-2 flex-wrap">
                 {hero.map((item) =>
                     <div key={item.id} className={`${getClassName(item.element, alreadyPick(item.id))} ${count == 7 ? "pointer-events-none" : ""} lg:h-20 lg:w-20 h-14 w-14 xs:w-20 xs:h-20 rounded-md hover:scale-110 transition relative overflow-hidden text-white text-start`}>
-                        <Image key={item.id} onClick={() => handleDraft(item.id)} src={item.imageportrait} alt={item.name} title={item.name} fill priority quality={70} className={`object-cover `} />
+                        <Image key={item.id} onClick={() => handleDraft(item.id)} src={item.imageportrait} alt={item.name} title={item.name} fill priority quality={70} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={`object-cover `} />
                     </div>)}
             </div>
         </section>

@@ -51,7 +51,7 @@ const ArenaMapCard = () => {
                             </svg>
                             <span className="sr-only">Loading...</span>
                         </div>
-                        : (<Image src={arenaMap} fill alt={arenaName} className="w-full h-full object-cover" />)
+                        : (<Image priority={true} src={arenaMap} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt={arenaName} className="w-full h-full object-cover" />)
                 }
             </div>
             <div className="text-xl pointer-events-none bg-white font-semibold text-center p-2 lg:block hidden">{arenaName ? arenaName : "Loading"}</div>
